@@ -1,23 +1,22 @@
-function do_draw(){
+var A = new Point(20, 20);
+var B = new Point(20, 160);
+var C = new Point(160, 160);
+var D = new Point(160, 20);
+var E = new Point(80, 80);
+
+var sample_points = [A, B, C, D, E];
+var sample_polygon = new Polygon(sample_points);
+
     var c=document.getElementById("mycanvas"); 
     var ctx=c.getContext("2d"); 
 
-    var width = 500;//same with the width of canvas in html
-    var height = 500;
+    var width = 200;//same with the width of canvas in html
+    var height = 200;
 
     var mark = []//mark[y][x], to mark if a point being part of edge
     for(i=0;i<=height;i++){
         mark[i] = [];
     }
-
-    var A = new Point(50, 50);
-    var B = new Point(50, 400);
-    var C = new Point(400, 400);
-    var D = new Point(400, 50);
-    var E = new Point(200, 200);
-
-    var sample_points = [A, B, C, D, E];
-    var sample_polygon = new Polygon(sample_points);
 
     //ctx.clearRect(0,0,width,height);
 
@@ -115,20 +114,6 @@ function do_draw(){
         }
     }
 
-    function fill_polygon(p, color){
-        inside = false;
-        for(i=p.min_y;i<p.max_y;i++){
-            for(j=0;j<width;j++){
-                if(mark[i][j]){
-                    inside = !inside;
-                }
-                if(inside){
-                    drawpixel(j, i, color);
-                }
-            }
-        }
-    }
-
     function rm_special(p){//remove 极值点 out from mark
         for(var i in p.points){
             i = parseInt(i);
@@ -159,7 +144,33 @@ function do_draw(){
         }
     }
 
+    function fill_polygon(p, color){
+        if(!fill_polygon.i) {
+            fill_polygon.i = p.min_y;
+            fill_polygon.j = 0;
+            fill_polygon.inside = false;
+        }
+        //console.log(fill_polygon.i, fill_polygon.j);
+
+        if(fill_polygon.i<p.max_y){
+            if(mark[fill_polygon.i][fill_polygon.j]){
+                fill_polygon.inside = !fill_polygon.inside;
+            }
+            if(fill_polygon.inside){
+                drawpixel(fill_polygon.j, fill_polygon.i, color);
+            }
+
+            fill_polygon.j = (fill_polygon.j+1)%width;
+            if(fill_polygon.j == 0){
+                fill_polygon.i = (fill_polygon.i+1);
+            }
+        }else{
+            clearInterval(fill_polygon.sb);
+        }
+    }
+
     draw_polygon(sample_polygon, '#333');
     rm_special(sample_polygon);
-    fill_polygon(sample_polygon, '#aaa');
-}
+    
+    //fill_polygon(sample_polygon, '#aaa');
+    fill_polygon.sb = setInterval('fill_polygon(sample_polygon, "#aaa");', 1);
