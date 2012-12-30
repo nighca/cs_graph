@@ -1,6 +1,6 @@
 //polygon.js
 
-Polygon = function(points){
+var Polygon = function(points){
 	for(i=0;i<points.length;){
 		p1 = points[i];
 		p2 = points[(i+1)%points.length];
