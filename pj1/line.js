@@ -1,6 +1,6 @@
 //line.js
 
-Line = function(beginpoint, endpoint) {
+var Line = function(beginpoint, endpoint) {
     this.beginpoint = beginpoint;
     this.endpoint = endpoint;
     this.dx = endpoint.x - beginpoint.x;
