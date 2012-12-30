@@ -1,6 +1,6 @@
 //Point.js
 
-Point = function(x, y) {this.x=x; this.y=y;};
+var Point = function(x, y) {this.x=x; this.y=y;};
 
 Point.prototype = {
 	copy : function(){
