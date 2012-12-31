@@ -1,30 +1,54 @@
-var A = new Point(20, 20);
-var B = new Point(20, 160);
-var C = new Point(160, 160);
-var D = new Point(160, 20);
-var E = new Point(80, 80);
-
-var sample_points = [A, B, C, D, E];
-var sample_polygon = new Polygon(sample_points);
-
 var c=document.getElementById("mycanvas"); 
 var ctx=c.getContext("2d"); 
 
-var width = c.width;//same with the width of canvas in html
-var height = c.height;
+ctx.width = c.width;//same with the width of canvas in html
+ctx.height = c.height;
+
 
 var mark = []//mark[y][x], to mark if a point being part of edge
-for(i=0;i<=height;i++){
+for(i=0,height=ctx.height;i<=height;i++){
     mark[i] = [];
+}
+
+var params_in = document.getElementsByClassName('params_in')[0];
+var add = document.getElementById("add");
+var remove = document.getElementById("remove");
+var draw = document.getElementById("draw");
+
+
+ctx.clear = function(){
+    ctx.clearRect(0,0,this.width,this.height);
+};
+
+var clear = function(){
+    ctx.clear();
+    for(i=0,height=ctx.height;i<=height;i++){
+        mark[i] = [];
+    }
+};
+
+var init = function(){
+    var point_ins = document.getElementsByClassName('point_in');
+    var points = [];
+    for(var i=0,num=point_ins.length;i<num;i++){
+        var point_in = point_ins[i];
+        var x = parseInt(point_in.getElementsByClassName("x")[0].value, 10);
+        var y = parseInt(point_in.getElementsByClassName("y")[0].value, 10);
+        var point = new Point(x,y);
+        points.push(point);
+    }
+    var polygon = new Polygon(points);
+    clear();
+    fill_polygon(polygon, "#aaa");
 }
 
 function drawpixel(x, y, color){
     ctx.fillStyle = color;
-    ctx.fillRect(x, height-y, 1, 1);
+    ctx.fillRect(x, ctx.height-y, 1, 1);
 }
 function draw(x, y, dx, dy, color){
     ctx.fillStyle = color;
-    ctx.fillRect(x, height-y, dx, dy);
+    ctx.fillRect(x, ctx.height-y, dx, dy);
 }
 
 function markpixel(x, y){
@@ -127,6 +151,8 @@ function fill_polygon(p, color){
 
         if(inside) drawpixel(j, i, color);
 
+        var width = ctx.width;
+
         j = (j+1)%width;
         if(j == 0) i++;
     }
@@ -134,6 +160,24 @@ function fill_polygon(p, color){
 }
 
 
+//bind
 
-fill_polygon(sample_polygon, '#aaa');
-//fill_polygon.sb = setInterval('fill_polygon(sample_polygon, "#aaa");', 0);
+add.addEventListener("click", function(){
+    var point_in = document.getElementsByClassName('point_in')[0].cloneNode(true);
+    params_in.appendChild(point_in);
+});
+remove.addEventListener("click", function(){
+    var point_ins = document.getElementsByClassName('point_in');
+    var num = point_ins.length;
+    if(num > 1){
+        var point_in = point_ins[num-1];
+        params_in.removeChild(point_in);    
+    }
+});
+draw.addEventListener("click", function(){
+    init();
+});
+
+//bind end
+
+init();

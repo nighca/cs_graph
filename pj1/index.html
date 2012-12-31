@@ -4,8 +4,42 @@
 		<title>Pj1 - Ni</title>
 
 	</head>
+	<style type="text/css">
+	body{
+		width: 980px;
+		position: relative;
+		margin: 0 auto;
+	}
+	.params_in{
+		float: right;
+		width: 400px;
+	}
+	</style>
 	<body>
-		<!--<input id="points" style="width:500px;"></br>-->
+		<div class="params_in">
+			<p class="buttons">
+				<button id="add">Add a point</button>
+				<button id="remove">Remove one point</button>
+				<button id="draw">Draw</button>
+			</p>
+			<p>0 =< x,y <= 500</p>
+			<p class="point_in">
+				x <input class="x" value="100" />
+				y <input class="y" value="100" />
+			</p>
+			<p class="point_in">
+				x <input class="x" value="400" />
+				y <input class="y" value="100" />
+			</p>
+			<p class="point_in">
+				x <input class="x" value="400" />
+				y <input class="y" value="400" />
+			</p>
+			<p class="point_in">
+				x <input class="x" value="100" />
+				y <input class="y" value="400" />
+			</p>
+		</div>
 		<canvas id="mycanvas" width="500" height="500" style="border:1px solid #333"></canvas>
 	</body>
 
